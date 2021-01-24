@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import autoFill from "./autofillFunc";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { unstable_renderSubtreeIntoContainer } from "react-dom";
 
 const AutoFill = () => {
+  const firstRun = useRef(true);
   const [inputValue, setInputValue] = useState("");
   const [list, setList] = useState(autoFill(inputValue));
 
@@ -27,11 +29,11 @@ const AutoFill = () => {
         dataLength={current.length}
         next={getMoreData}
         hasMore={hasMore}
-        loader={<h4>Loading...</h4>}
+        // loader={<h4>Loading...</h4>}
       >
         <div>
           {current.map((e, id) => (
-            <li>{e}</li>
+            <div>{e}</div>
           ))}
         </div>
       </InfiniteScroll>
@@ -39,19 +41,33 @@ const AutoFill = () => {
   };
 
   useEffect(() => {
-    setCurrent(autoFill(inputValue).slice(0, count.next));
+    if (firstRun.current) {
+      firstRun.current = false;
+      return;
+    }
+
+    if (inputValue === "") {
+      setCurrent(autoFill(inputValue).slice(count.prev, count.next));
+      return;
+    }
+    setCurrent(autoFill(inputValue));
   }, [inputValue]);
 
   return (
-    <>
-      <input
-        type="text"
-        onChange={(e) => {
-          setInputValue(e.target.value);
-        }}
-      ></input>
-      {renderList()}
-    </>
+    <div className="ui three column centered grid">
+      <div className="row">
+        <h1 className="ui header">AutoFilter for AutoFill</h1>
+      </div>
+      <div className="row">
+        <input
+          type="text"
+          onChange={(e) => {
+            setInputValue(e.target.value);
+          }}
+        ></input>
+      </div>
+      <div className="row">{renderList()}</div>
+    </div>
   );
 };
 
