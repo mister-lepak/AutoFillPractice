@@ -39,5 +39,6 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.12.10"
-  }
+  },
+  "homepage": "."
 }
