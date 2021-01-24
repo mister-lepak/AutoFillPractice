@@ -1,11 +1,26 @@
-const data = [
-  "apple",
-  "iPhone",
-  "basketball",
-  "swimming",
-  "orange",
-  "application",
-];
+import faker from "faker";
+
+const generateFakeData = () => {
+  const itemList = [];
+  for (let i = 0; i < 50000; i++) {
+    itemList.push(faker.commerce.product());
+  }
+  for (let i = 0; i < 50000; i++) {
+    itemList.push(faker.random.word());
+  }
+  return itemList;
+};
+
+const data = generateFakeData();
+
+// const data = [
+//   "apple",
+//   "iPhone",
+//   "basketball",
+//   "swimming",
+//   "orange",
+//   "application",
+// ];
 
 const autoFill = (input, dataInput = data) => {
   const result = [];
@@ -13,12 +28,14 @@ const autoFill = (input, dataInput = data) => {
     return dataInput;
   }
   dataInput.map((e) => {
-    if (e.includes(input)) {
+    const elementLowerCase = e.toLowerCase();
+    const inputLowerCase = input.toLowerCase();
+    if (elementLowerCase.includes(inputLowerCase)) {
       result.push(e);
     }
   });
   return result;
 };
 
-module.exports = autoFill;
-// export default autoFill;
+// module.exports = autoFill;
+export default autoFill;
