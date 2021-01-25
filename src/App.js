@@ -1,9 +1,9 @@
-import AutoFill from "./AutoFill";
+import AutoFilter from "./AutoFilter";
 
 function App() {
   return (
     <div className="App">
-      <AutoFill />
+      <AutoFilter />
     </div>
   );
 }
